@@ -18,4 +18,10 @@ Depending on the capabilites of the Host and Guest AI Assistants, the conversati
 2. Edit the `config.yaml` file to specify the host AI Assistant details
 3. Run `poetry run streamlit run ai_assistant_interlink/main.py` to start the web interface
 
+## Deploy your own Host AI Assistant interconnect
 You can also easily deploy your Host AI Assistant page with streamlit.
+
+1. Get a streamlit account
+2. Fork this repository
+3. Connect your forked repository to streamlit
+4. Deploy your forked repository to streamlit, make sure to use advanced settings to specify the the python version as 3.11, and add the OPENAI_API_KEY for your host AI Assistant as a secret.
