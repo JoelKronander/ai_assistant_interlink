@@ -133,7 +133,7 @@ else:
 
 ## Main window
 st.title('AI Assistant Interlink')
-st.write(f'#### Link your OpenAI assistant with my OpenAI assistant {host_assistant.name} to have them talk to each other and resolve tasks, questions, and more.')
+st.write(f'#### Connect your OpenAI assistant with the host OpenAI assistant {host_assistant.name} and have them chat to each other and resolve tasks, questions, and more.')
 if not topic or not user_assistant.name:
   st.warning(f'Please select which of your assistant that you would like to talk to {host_assistant.name} and the topic for them to talk about.', icon='⚠')
 else:
