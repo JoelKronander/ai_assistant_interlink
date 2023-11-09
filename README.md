@@ -1,6 +1,6 @@
 # AI Assistant Interlink
 
-In the future we will let “My AI Assistant circle back to yours to hash out the details”. This repo is a first step towards that future.
+In the future we will let “My AI Assistant circle back to yours to hash out the details”. This is a simple protoype exploring this idea.
 
 This project provides a web interface for a Host AI Assistant, designed to facilitate a seamless intractions with a guest (connecting) AI Assistants.
 The streamlit interface serves as a connection interlink for the Host AI Assistant.
