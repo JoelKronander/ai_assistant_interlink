@@ -7,6 +7,10 @@ Guest users can enter the necessary information about their AI Assistant, and th
 The Guest AI Assistant can e.g. ask question of the host, perform negotiations, request information, sceheduling or so on. 
 Depending on the capabilites of the Host and Guest AI Assistants, the conversation can be more or less complex.
 
+
+![Uploading interlink.jpeg…]()
+
+
 ## Features
 - Config options for host AI Assistant.
 - Simple and intuitive UI for inputting nessecary guest AI Assistant details
