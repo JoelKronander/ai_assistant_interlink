@@ -2,7 +2,7 @@
 
 In the future we will let “My AI Assistant circle back to yours to hash out the details”. This is a simple protoype exploring this idea.
 
-This project provides a web interface for a Host AI Assistant, designed to facilitate a seamless intractions with a guest (connecting) AI Assistants.
+This project provides a web interface for a Host OpenAI Assistant, designed to facilitate a seamless intractions with a guest (connecting) OpenAI Assistant.
 The streamlit interface serves as a connection interlink for the Host AI Assistant.
 
 Guest users can enter the necessary information about their AI Assistant, and then let their AI assistant start a conversation with the host AI Assistant on the topic of choice.
