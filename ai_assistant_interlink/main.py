@@ -3,11 +3,17 @@ import os
 from openai import OpenAI
 import time
 import threading
+import yaml
 
+host_openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-my_openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-MY_ASSISTANT_NAME = 'Bender AI'
-MY_ASSISTANT_ID = 'asst_GyjqqCWxLlfPYZtFU9kxxWfo'
+# load config.yaml file settings
+with open("config.yaml") as file:
+    config = yaml.safe_load(file)
+    print(config)
+host_assistant_id = config['OPENAI_HOST_ASSISTANT']['ID']
+host_assistant = host_openai_client.beta.assistants.retrieve(host_assistant_id)
+
 HOST_AVATAR_IMG = 'content/images/hostAI.png'
 GUEST_AVATAR_IMG = 'content/images/guestAI.png'
 
@@ -30,14 +36,13 @@ def get_last_assistant_message(client, thread_id):
 
 def converse(
       assistant_1_client,
-      assistant_1_id,
+      assistant_1,
       assistant_2_client,
       assistant_2,
       topic,
       message_count):
-    print("TOPIC: "+topic+"\n")
     # Initialize Assistants
-    assistant_1 = assistant_1_client.beta.assistants.retrieve(assistant_1_id)
+    assistant_1 = assistant_1_client.beta.assistants.retrieve(assistant_1.id)
     assistant_2 = assistant_2_client.beta.assistants.retrieve(assistant_2.id)
 
     assistant_1.avatar = HOST_AVATAR_IMG
@@ -50,17 +55,17 @@ def converse(
     # Function for the conversation between two assistants
     def assistant_conversation(start_message, assistant_a, thread_a, client_a, assistant_b, thread_b, client_b, msg_limit):
       message_content = start_message
-  
+
       for i in range(msg_limit):
           # Determine which assistant is speaking for color coding
           if assistant_a == assistant_1:
               assistant_color = '\033[94m\033[1m' 
-              assistant_name = MY_ASSISTANT_NAME
+              assistant_name = assistant_1.name
           else:
               assistant_color = '\033[92m\033[1m'
               assistant_name = assistant_2.name
   
-          # Bold and color the assistant's name and print the turn
+          # Debug print in console
           print(f"{assistant_color}{assistant_name} speaking...\033[0m (Turn {i + 1})")
 
           # Send the message and wait for a response
@@ -98,9 +103,9 @@ def converse(
           thread_a, thread_b = thread_b, thread_a
 
     # Start the conversation
-    start_message = f"Respond with a starting line to discuss {topic}?"
+    host_start_message = f"Welcome {assistant_2.name}. How can I help you with today? I see that you come to talk to me about {topic}."
 
-    assistant_conversation(start_message, assistant_1, thread_1, assistant_1_client, assistant_2, thread_2, assistant_1_client, message_count)
+    assistant_conversation(host_start_message, assistant_1, thread_1, assistant_1_client, assistant_2, thread_2, assistant_1_client, message_count)
 
 
 topic = None
@@ -128,13 +133,13 @@ else:
 
 ## Main window
 st.title('AI Assistant Interlink')
-st.write(f'#### Link your OpenAI assistant with my OpenAI assistant {MY_ASSISTANT_NAME} to have them talk to each other and resolve tasks, questions, and more.')
+st.write(f'#### Link your OpenAI assistant with my OpenAI assistant {host_assistant.name} to have them talk to each other and resolve tasks, questions, and more.')
 if not topic or not user_assistant.name:
-  st.warning(f'Please select which of your assistant that you would like to talk to {MY_ASSISTANT_NAME} and the topic for them to talk about.', icon='⚠')
+  st.warning(f'Please select which of your assistant that you would like to talk to {host_assistant.name} and the topic for them to talk about.', icon='⚠')
 else:
   st.write('***')
   col1, col2 = st.columns(2, gap='small')
-  col1.write('Host Assistant: **'+MY_ASSISTANT_NAME+'**')
+  col1.write('Host Assistant: **'+host_assistant.name+'**')
   col1.image(HOST_AVATAR_IMG, width=100)
   col2.write(f'Selected User Assistant: **{user_assistant.name}**')
   col2.image(GUEST_AVATAR_IMG, width=100)
@@ -150,7 +155,7 @@ else:
 
   conv_ongoing = True
   while conv_ongoing:
-    converse(my_openai_client, MY_ASSISTANT_ID, user_openai_client, user_assistant, topic, num_messages)
+    converse(host_openai_client, host_assistant, user_openai_client, user_assistant, topic, num_messages)
     
     conv_ongoing = False
 
